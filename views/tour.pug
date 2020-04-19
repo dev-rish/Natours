@@ -21,7 +21,7 @@ mixin reviewCard(review)
       each star in [1, 2, 3, 4, 5]
         svg.reviews__star(class=`reviews__star--${review.rating >= star ? 'active' : 'inactive'}`)
           use(xlink:href='/img/icons.svg#icon-star')
-      
+
 block content
   section.section-header
     .header__hero
@@ -59,11 +59,10 @@ block content
               img.overview-box__img(src=`/img/users/${guide.photo}`, alt=`${guide.name}`)
 
               - if(guide.role === 'lead-guide')
-              span.overview-box__label Lead Guide
+                span.overview-box__label Lead Guide
               - if(guide.role === 'guide')
-              span.overview-box__label Tour Guide
+                span.overview-box__label Tour Guide
               span.overview-box__text= guide.name
-
     .description-box
       h2.heading-secondary.ma-bt-lg= `About ${tour.name} Tour`
       - const paragraphs = tour.description.split('\n');
@@ -82,7 +81,7 @@ block content
     .reviews
       each review in tour.reviews
         +reviewCard(review)
-      
+
 
   section.section-cta
     .cta

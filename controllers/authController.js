@@ -12,7 +12,7 @@ const generateToken = id => {
   });
 };
 
-const createSendJwt = (user, statusCode, res) => {
+const createSendJwt = (user, statusCode, req, res) => {
   const token = generateToken(user._id);
   const expires = new Date(
     Date.now() + process.env.JWT_COOKIE_EXPIRE_TIME * 24 * 60 * 60 * 1000
@@ -20,12 +20,12 @@ const createSendJwt = (user, statusCode, res) => {
 
   const cookieOptions = {
     expires,
-    // Cookie will only be sent on secure conn.
-    secure: false,
     // Cookie can be accessed or modified by browser
-    httpOnly: true
+    httpOnly: true,
+    // Cookie will only be sent on secure conn.
+    // 'x-forwarded-proto' is specific to heroku
+    secure: req.secure || req.headers('x-forwarded-proto') === 'https'
   };
-  if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
 
   res.cookie('jwt', token, cookieOptions);
 
@@ -60,7 +60,7 @@ const signup = catchAsync(async (req, res) => {
 
   const url = `${req.protocol}://${req.get('host')}/me`;
   await new Email(newUser, url).sendWelcome();
-  createSendJwt(newUser, 201, res);
+  createSendJwt(newUser, 201, req, res);
 });
 
 const login = catchAsync(async (req, res) => {
@@ -81,7 +81,7 @@ const login = catchAsync(async (req, res) => {
     throw new AppError('Invalid email or password', 401);
   }
   // Send jwt
-  createSendJwt(user, 200, res);
+  createSendJwt(user, 200, req, res);
 });
 
 // Only for rendered pages
@@ -240,7 +240,7 @@ const resetPassword = catchAsync(async (req, res) => {
   await user.save();
 
   // Log the user in and send JWT
-  createSendJwt(user, 200, res);
+  createSendJwt(user, 200, req, res);
 });
 
 const updatePassword = catchAsync(async (req, res) => {
@@ -260,7 +260,7 @@ const updatePassword = catchAsync(async (req, res) => {
   user.passwordConfirm = newPasswordConfirm;
   await user.save();
   // Log user in i.e. send token
-  createSendJwt(user, 200, res);
+  createSendJwt(user, 200, req, res);
 });
 
 module.exports = {
