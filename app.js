@@ -67,29 +67,31 @@ app.use('/api', limiter);
 app.post(
   '/webhook-checkout',
   bodyParser.raw({ type: 'application/json' }),
-  (req, res) => {
-    const sig = req.headers['stripe-signature'];
+  // (req, res) => {
+  //   const sig = req.headers['stripe-signature'];
 
-    let event;
+  //   let event;
 
-    try {
-      event = stripe.webhooks.constructEvent(
-        req.body,
-        sig,
-        process.env.STRIPE_SECRET_WEBHOOK
-      );
-    } catch (err) {
-      // On error, log and return the error message
-      console.log(`❌ Error message: ${err.message}`);
-      return res.status(400).send(`Webhook Error: ${err.message}`);
-    }
+  //   try {
+  //     event = stripe.webhooks.constructEvent(
+  //       req.body,
+  //       sig,
+  //       process.env.STRIPE_SECRET_WEBHOOK
+  //     );
+  //   } catch (err) {
+  //     // On error, log and return the error message
+  //     console.log(`❌ Error message: ${err.message}`);
+  //     return res.status(400).send(`Webhook Error: ${err.message}`);
+  //   }
 
-    // Successfully constructed event
-    console.log('✅ Success:', event.id);
 
-    // Return a response to acknowledge receipt of the event
-    res.json({ received: true });
-  }
+  //   // Successfully constructed event
+  //   console.log('✅ Success:', event.id);
+
+  //   // Return a response to acknowledge receipt of the event
+  //   res.json({ received: true });
+  // }
+  webhookCheckout
 );
 
 // Body parser, read data from body into req.body and limit req body size
