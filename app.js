@@ -8,6 +8,7 @@ const xss = require('xss-clean');
 const hpp = require('hpp');
 const cookieParser = require('cookie-parser');
 const compression = require('compression');
+const cors = require('cors');
 
 const AppError = require('./utils/appError');
 const { globalErrorHandler } = require('./controllers/errorController');
@@ -27,6 +28,13 @@ app.set('views', path.join(__dirname, 'views'));
 
 // MIDDLEWARE:
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(cors());
+
+// 'options' is just another http method sent by browser just before any non-simple request (i.e all except GET and POST or the ones that use non-standard header or cookie)
+app.options('*', cors());
+// for a specific route
+// app.options('/api/v1/tours/:id', cors());
 
 // Enable logging in development mode
 if (process.env.NODE_ENV === 'development') {
