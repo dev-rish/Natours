@@ -11,6 +11,8 @@ const compression = require('compression');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 
+const stripe = require('stripe')(process.env.STRIPE_SECRET_API_KEY);
+
 const AppError = require('./utils/appError');
 const { globalErrorHandler } = require('./controllers/errorController');
 const { webhookCheckout } = require('./controllers/bookingController');
@@ -55,11 +57,39 @@ const limiter = rateLimit({
 app.use('/api', limiter);
 
 // This Route is placed here since stripe needs req in stream and not json hence its placed before express.json
+// app.post(
+//   '/webhook-checkout',
+//   // express.raw({ type: 'application/json' }),
+//   bodyParser.raw({ type: 'application/json' }),
+//   webhookCheckout
+// );
+
 app.post(
   '/webhook-checkout',
-  // express.raw({ type: 'application/json' }),
   bodyParser.raw({ type: 'application/json' }),
-  webhookCheckout
+  (req, res) => {
+    const sig = req.headers['stripe-signature'];
+
+    let event;
+
+    try {
+      event = stripe.webhooks.constructEvent(
+        req.body,
+        sig,
+        process.env.STRIPE_SECRET_WEBHOOK
+      );
+    } catch (err) {
+      // On error, log and return the error message
+      console.log(`❌ Error message: ${err.message}`);
+      return res.status(400).send(`Webhook Error: ${err.message}`);
+    }
+
+    // Successfully constructed event
+    console.log('✅ Success:', event.id);
+
+    // Return a response to acknowledge receipt of the event
+    res.json({ received: true });
+  }
 );
 
 // Body parser, read data from body into req.body and limit req body size
