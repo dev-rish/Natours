@@ -54,7 +54,13 @@ const server = app.listen(port, () => {
 
 process.on('unhandledRejection', err => {
   console.log('UNHANDLED REJECTION🎆🎆🎆. Shutting down server....');
-  console.log(err.name, ':', err.message);
+
+  if(process.env.NODE_ENV === 'production') {
+
+    console.log(err.name, ':', err.message);
+  } else {
+    console.log(err)
+  }
 
   // Wait for any pending request to finish and then close
   server.close(() => {
