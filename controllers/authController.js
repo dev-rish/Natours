@@ -24,7 +24,7 @@ const createSendJwt = (user, statusCode, req, res) => {
     httpOnly: true,
     // Cookie will only be sent on secure conn.
     // 'x-forwarded-proto' is specific to heroku
-    secure: req.secure || req.headers('x-forwarded-proto') === 'https'
+    secure: req.secure || req.headers['x-forwarded-proto'] === 'https'
   };
 
   res.cookie('jwt', token, cookieOptions);

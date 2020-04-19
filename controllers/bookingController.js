@@ -27,7 +27,9 @@ const getCheckoutSession = catchAsync(async (req, res) => {
       {
         name: `${tour.name} Tour`,
         description: tour.summary,
-        images: [`https://www.natours.dev/img/tours/${tour.imageCover}`],
+        images: [
+          `${req.protocol}://${req.get('host')}/img/tours/${tour.imageCover}`
+        ],
         amount: tour.price * 100,
         currency: 'inr',
         quantity: 1
@@ -61,7 +63,7 @@ const createBookingOnCheckout = async session => {
   await Booking.create({ tour, user, price });
 };
 
-const webhookCheckout = async (req, res, next) => {
+const webhookCheckout = (req, res, next) => {
   let event;
   try {
     const signature = req.header['stripe-signature'];
@@ -77,7 +79,7 @@ const webhookCheckout = async (req, res, next) => {
 
   // Just to be sure
   if (event.type === 'checkout.session.completed') {
-    await this.createBookingOnCheckout(event.data.object);
+    this.createBookingOnCheckout(event.data.object);
   }
 
   res.status(200).json({ received: true });
