@@ -9,9 +9,6 @@ const hpp = require('hpp');
 const cookieParser = require('cookie-parser');
 const compression = require('compression');
 const cors = require('cors');
-const bodyParser = require('body-parser');
-
-const stripe = require('stripe')(process.env.STRIPE_SECRET_API_KEY);
 
 const AppError = require('./utils/appError');
 const { globalErrorHandler } = require('./controllers/errorController');
@@ -66,7 +63,6 @@ app.use('/api', limiter);
 
 app.post(
   '/webhook-checkout',
-  // bodyParser.raw({ type: 'application/json' }),
   express.raw({ type: 'application/json' }),
   webhookCheckout
 );

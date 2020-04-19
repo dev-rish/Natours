@@ -1,6 +1,7 @@
 const express = require('express');
 
 const {
+  alerts,
   getOverview,
   getTour,
   getLoginForm,
@@ -10,6 +11,9 @@ const {
 const { isLoggedIn, authenticate } = require('../controllers/authController');
 
 const router = express.Router();
+
+// to detect any alert that may need to be generated
+router.use(alerts)
 
 // NOTE: 'createBookingOnCheckout' is first middleware since login isn't needed since this will work only when stripe makes a success_url GET call which wouldn't have token
 router.get('/', isLoggedIn, getOverview);

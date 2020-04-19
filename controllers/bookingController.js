@@ -18,7 +18,9 @@ const getCheckoutSession = catchAsync(async (req, res) => {
     // success_url: `${req.protocol}://${req.get('host')}?tour=${
     //   req.params.tourId
     // }&user=${req.user.id}&price=${tour.price}`,
-    success_url: `${req.protocol}://${req.get('host')}/my-bookings`,
+    success_url: `${req.protocol}://${req.get(
+      'host'
+    )}/my-bookings?alert=bookingSuccess`,
     cancel_url: `${req.protocol}://${req.get('host')}/tour/${tour.slug}`,
     customer_email: req.user.email,
     // Will be used in webhook
