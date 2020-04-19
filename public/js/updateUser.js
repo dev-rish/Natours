@@ -10,6 +10,7 @@ export const updateData = async data => {
       data
     });
     if (res.data.status === 'success') {
+      location.reload();
       showAlert('success', 'Data updated successfully!');
     }
   } catch (err) {
