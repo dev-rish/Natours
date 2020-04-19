@@ -1,6 +1,7 @@
 # Natours Application
 
 This app can be used to book tours. To try out now click [HERE](https://natours-rish.herokuapp.com/ "HERE") (It may take time to load for the first time so please be patient 😄😀)
+
 Built using NodeJS, ExpressJS, MongoDB, Mongoose.
 
 ## Endpoints
