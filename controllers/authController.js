@@ -59,7 +59,9 @@ const signup = catchAsync(async (req, res) => {
   });
 
   const url = `${req.protocol}://${req.get('host')}/me`;
-  await new Email(newUser, url).sendWelcome();
+
+  // await new Email(newUser, url).sendWelcome();
+
   createSendJwt(newUser, 201, req, res);
 });
 
@@ -197,7 +199,7 @@ const forgotPassword = async (req, res, next) => {
       'host'
     )}/api/v1/user/resetPassword/${resetToken}`;
 
-    await new Email(user, resetUrl).sendPasswordReset();
+    // await new Email(user, resetUrl).sendPasswordReset();
 
     res.status(200).json({
       status: 'success',
