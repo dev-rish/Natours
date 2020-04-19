@@ -4,7 +4,9 @@
 This app can be used to book tours. To try out now click [HERE](https://natours-rish.herokuapp.com/  "HERE") (It may take time to load for the first time so please be patient 😄😀)
 
 You can use below credentials to test it out.
+
 Email: **sophie@example.com**
+
 Password: **test1234**
 
 Built using NodeJS, ExpressJS, MongoDB, Mongoose.
