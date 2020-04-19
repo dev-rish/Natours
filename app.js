@@ -9,6 +9,7 @@ const hpp = require('hpp');
 const cookieParser = require('cookie-parser');
 const compression = require('compression');
 const cors = require('cors');
+const bodyParser = require('body-parser');
 
 const AppError = require('./utils/appError');
 const { globalErrorHandler } = require('./controllers/errorController');
@@ -56,7 +57,8 @@ app.use('/api', limiter);
 // This Route is placed here since stripe needs req in stream and not json hence its placed before express.json
 app.post(
   '/webhook-checkout',
-  express.raw({ type: 'application/json' }),
+  // express.raw({ type: 'application/json' }),
+  bodyParser.raw({ type: 'application/json' }),
   webhookCheckout
 );
 
