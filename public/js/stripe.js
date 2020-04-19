@@ -8,7 +8,7 @@ const bookTour = async tourId => {
   try {
     // Get the session
     const { data } = await axios.get(
-      `http://localhost:3000/api/v1/booking/checkout-session/${tourId}`
+      `/api/v1/booking/checkout-session/${tourId}`
     );
 
     // Create checkout form + deduct amount
