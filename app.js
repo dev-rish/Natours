@@ -54,7 +54,11 @@ const limiter = rateLimit({
 app.use('/api', limiter);
 
 // This Route is placed here since stripe needs req in stream and not json hence its placed before express.json
-app.post('/webhook-checkout', express.raw(), webhookCheckout);
+app.post(
+  '/webhook-checkout',
+  express.raw({ type: 'application/json' }),
+  webhookCheckout
+);
 
 // Body parser, read data from body into req.body and limit req body size
 app.use(express.json({ limit: '10kb' }));
