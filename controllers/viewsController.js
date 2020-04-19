@@ -48,6 +48,12 @@ const getLoginForm = catchAsync(async (req, res) => {
   });
 });
 
+const getSignupForm = catchAsync(async (req, res) => {
+  res.status(200).render('signup', {
+    title: 'Signup'
+  });
+});
+
 const getAccount = (req, res) => {
   res.status(200).render('account', {
     title: 'Your Account'
@@ -73,6 +79,7 @@ module.exports = {
   getOverview,
   getTour,
   getLoginForm,
+  getSignupForm,
   getAccount,
   getMyBookings
 };

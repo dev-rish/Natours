@@ -1,6 +1,6 @@
 /* eslint-disable */
 import '@babel/polyfill';
-import { login, logout } from './login';
+import { login, logout, signup } from './auth';
 import { updateData, updatePassword } from './updateUser';
 import { displayMap } from './mapbox';
 import { bookTour } from './stripe';
@@ -8,7 +8,8 @@ import { showAlert } from './alerts';
 
 // Dom Element
 const mapBox = document.getElementById('map');
-const loginForm = document.querySelector('.login-form form');
+const loginForm = document.getElementById('login-form');
+const signupForm = document.getElementById('signup-form');
 const logoutBtn = document.querySelector('.nav__el--logout');
 const userDataForm = document.querySelector('.form-user-data');
 const userPasswordForm = document.querySelector('.form-user-password');
@@ -26,6 +27,21 @@ if (loginForm) {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
     login(email, password);
+  });
+}
+
+if (signupForm) {
+  signupForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const passwordConfirm = document.getElementById('passwordConfirm').value;
+    if (password === passwordConfirm) {
+      signup(name, email, password, passwordConfirm);
+    } else {
+      showAlert('error', 'Passwords do not match! Please try again', 5000);
+    }
   });
 }
 
@@ -64,11 +80,11 @@ if (logoutBtn) logoutBtn.addEventListener('click', logout);
 
 if (bookBtn) {
   bookBtn.addEventListener('click', e => {
-    e.target.textContent = 'Processing...'
+    e.target.textContent = 'Processing...';
     const tourId = e.target.dataset.tourId;
     bookTour(tourId);
   });
 }
 
 const alertMessage = document.querySelector('body').dataset.alert;
-if(alertMessage) showAlert('success', alertMessage, 7000);
+if (alertMessage) showAlert('success', alertMessage, 7000);

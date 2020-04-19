@@ -21,6 +21,27 @@ export const login = async (email, password) => {
   }
 };
 
+export const signup = async (name, email, password, passwordConfirm) => {
+  try {
+    const res = await axios({
+      method: 'POST',
+      url: '/api/v1/users/signup',
+      data: {
+        name,
+        email,
+        password,
+        passwordConfirm
+      }
+    });
+    if (res.data.status === 'success') {
+      showAlert('success', 'Account created successfully!');
+      location.assign('/');
+    }
+  } catch (err) {
+    showAlert('error', err.response.data.message + '!');
+  }
+};
+
 export const logout = async () => {
   try {
     const res = await axios({
@@ -33,7 +54,7 @@ export const logout = async () => {
 
       // This will prevent reload from browser catch
       // location.reload(true);
-      
+
       location.assign('/');
     }
   } catch (err) {
